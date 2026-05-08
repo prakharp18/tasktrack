@@ -13,11 +13,18 @@ router.get("/", auth, async (req, res) => {
         email: true,
         role: true,
         createdAt: true,
-        _count: { select: { tasks: true, projects: true } },
+        _count: { select: { tasks: true, projects: true, projectMembers: true } },
       },
       orderBy: { createdAt: "asc" },
     });
-    res.json({ users });
+    const formattedUsers = users.map((u) => ({
+      ...u,
+      _count: {
+        tasks: u._count.tasks,
+        projects: u._count.projects + u._count.projectMembers,
+      },
+    }));
+    res.json({ users: formattedUsers });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server error" });

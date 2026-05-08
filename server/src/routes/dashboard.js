@@ -14,7 +14,7 @@ router.get("/", auth, async (req, res) => {
       : { OR: [{ assigneeId: userId }, { project: { ownerId: userId } }] };
 
     const [totalProjects, tasks, totalMembers] = await Promise.all([
-      prisma.project.count(isAdmin ? {} : { where: { OR: [{ ownerId: userId }, { tasks: { some: { assigneeId: userId } } }] } }),
+      prisma.project.count(isAdmin ? {} : { where: { OR: [{ ownerId: userId }, { members: { some: { userId } } }, { tasks: { some: { assigneeId: userId } } }] } }),
       prisma.task.findMany({ where: taskWhere, select: { status: true, dueDate: true } }),
       prisma.user.count(),
     ]);

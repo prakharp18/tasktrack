@@ -57,7 +57,7 @@ img { max-width: 100%; }
 
 .text-muted { color: var(--text-2); }
 
-/* ============ AUTH ============ */
+
 .auth-page {
   min-height: 100vh;
   display: flex;
@@ -93,7 +93,7 @@ img { max-width: 100%; }
 .auth-switch a { color: var(--accent); font-weight: 500; }
 .auth-switch a:hover { text-decoration: underline; }
 
-/* ============ FORMS ============ */
+
 .field {
   display: flex;
   flex-direction: column;
@@ -111,6 +111,7 @@ img { max-width: 100%; }
   padding: 0.6rem 0.75rem;
   outline: none;
   transition: border-color var(--transition), box-shadow var(--transition);
+  width: 100%;
 }
 .field input:focus,
 .field select:focus,
@@ -121,9 +122,30 @@ img { max-width: 100%; }
 .field input::placeholder,
 .field textarea::placeholder { color: var(--text-2); }
 
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.password-input-wrapper input {
+  padding-right: 2.5rem;
+}
+.password-toggle {
+  position: absolute;
+  right: 0.75rem;
+  background: transparent;
+  border: none;
+  color: var(--text-2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.password-toggle:hover { color: var(--text-0); }
+
 .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
 
-/* ============ BUTTONS ============ */
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -157,11 +179,11 @@ img { max-width: 100%; }
 .icon-btn:hover { color: var(--text-0); background: var(--bg-3); }
 .icon-btn.danger:hover { color: var(--red); background: var(--red-soft); }
 
-/* ============ ALERTS ============ */
+
 .alert { padding: 0.6rem 0.85rem; border-radius: var(--radius); font-size: 0.8125rem; margin-bottom: 1rem; }
 .alert-error { background: var(--red-soft); color: var(--red); border: 1px solid rgba(248,113,113,0.2); }
 
-/* ============ SHELL LAYOUT ============ */
+
 .shell { display: flex; min-height: 100vh; }
 
 .sidebar {
@@ -263,7 +285,7 @@ img { max-width: 100%; }
   min-height: 100vh;
 }
 
-/* ============ TOPBAR ============ */
+
 .topbar {
   height: 64px;
   border-bottom: 1px solid var(--border);
@@ -302,7 +324,7 @@ img { max-width: 100%; }
   cursor: pointer;
 }
 
-/* ============ PAGE ============ */
+
 .main { flex: 1; }
 .page { padding: 2rem 2.5rem; max-width: 1200px; }
 .page-top {
@@ -322,7 +344,7 @@ img { max-width: 100%; }
 }
 .back-link:hover { color: var(--text-0); }
 
-/* ============ CARDS ============ */
+
 .card {
   background: var(--bg-1);
   border: 1px solid var(--border);
@@ -338,7 +360,7 @@ img { max-width: 100%; }
 }
 .card-header h3 { font-size: 0.9375rem; font-weight: 600; }
 
-/* ============ STATS ============ */
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -377,7 +399,7 @@ img { max-width: 100%; }
 
 .quick-actions { display: flex; gap: 0.75rem; }
 
-/* ============ PILLS / BADGES ============ */
+
 .pill {
   display: inline-flex;
   padding: 0.15rem 0.55rem;
@@ -398,7 +420,7 @@ img { max-width: 100%; }
 .pill-admin { background: var(--accent-soft); color: var(--accent); }
 .pill-member { background: var(--bg-3); color: var(--text-1); }
 
-/* ============ PROJECT GRID ============ */
+
 .project-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -434,7 +456,7 @@ img { max-width: 100%; }
   display: inline-flex; align-items: center; gap: 0.3rem;
 }
 
-/* ============ KANBAN BOARD ============ */
+
 .board-filters {
   display: flex;
   align-items: center;
@@ -549,10 +571,10 @@ img { max-width: 100%; }
 }
 .status-select:focus { border-color: var(--accent); }
 
-/* ============ TABLE ============ */
-.table-wrap { padding: 0; overflow: hidden; }
 
-.data-table { width: 100%; border-collapse: collapse; }
+.table-wrap { padding: 0; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+.data-table { width: 100%; border-collapse: collapse; min-width: 600px; }
 .data-table th,
 .data-table td {
   text-align: left;
@@ -566,7 +588,7 @@ img { max-width: 100%; }
 }
 .data-table tr:hover td { background: var(--bg-2); }
 
-/* ============ MODAL ============ */
+
 .modal-overlay {
   position: fixed; inset: 0;
   background: rgba(0, 0, 0, 0.6);
@@ -587,17 +609,17 @@ img { max-width: 100%; }
 .modal h3 { font-size: 1.125rem; font-weight: 600; margin-bottom: 1.25rem; }
 .modal-actions { display: flex; justify-content: flex-end; gap: 0.6rem; margin-top: 1.25rem; }
 
-/* ============ EMPTY STATE ============ */
+
 .empty { text-align: center; padding: 4rem 2rem; color: var(--text-2); }
 .empty svg { opacity: 0.25; margin-bottom: 0.75rem; }
 .empty h3 { color: var(--text-1); margin-bottom: 0.3rem; }
 .empty p { font-size: 0.8125rem; }
 
-/* ============ ANIMATIONS ============ */
+
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-/* ============ RESPONSIVE ============ */
+
 .sidebar-backdrop {
   display: none;
   position: fixed;
