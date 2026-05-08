@@ -2,6 +2,10 @@ Ethara - Team Task Manager
 
 A professional full-stack project and task management application built using React (Vite) and Node.js (Express), powered by Prisma and PostgreSQL.
 
+=== LIVE DEPLOYMENT ===
+- Frontend URL (Vercel): https://tasktrack-eta-hazel.vercel.app/
+- Backend URL (Railway): https://tasktrack-production-6368.up.railway.app/
+
 === TECH STACK ===
 - Frontend: React 18, Vite, React Router, Lucide Icons
 - Backend: Node.js, Express.js
