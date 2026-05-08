@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ethara — Team Task Manager
 
-## Getting Started
+Full-stack project & task management app with role-based access control, Kanban boards, and overdue tracking.
 
-First, run the development server:
+## Tech Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+| Layer | Technology |
+|---|---|
+| Frontend | React 18 + Vite |
+| Backend | Express.js |
+| Database | PostgreSQL |
+| ORM | Prisma |
+| Auth | JWT + bcrypt |
+| Styling | Vanilla CSS (dark mode) |
+
+## Features
+
+- JWT authentication (signup/login)
+- Role-based access: Admin creates projects, Members update assigned tasks
+- Project CRUD with team assignment
+- Kanban task board (To Do → In Progress → Done)
+- Priority levels, due dates, overdue detection
+- Dashboard with task/project analytics
+- Team management page
+- Responsive dark UI
+
+## Project Structure
+
+```
+├── client/          React + Vite frontend
+│   └── src/
+│       ├── components/
+│       ├── pages/
+│       ├── hooks/
+│       └── utils/
+├── server/          Express API backend
+│   └── src/
+│       ├── routes/
+│       ├── middleware/
+│       └── prisma/
+└── README.md
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# Backend
+cd server
+npm install
+npx prisma generate
+npx prisma db push
+npm run dev
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Frontend (separate terminal)
+cd client
+npm install
+npm run dev
+```
 
-## Learn More
+Open http://localhost:5173 — API proxied to :5000
 
-To learn more about Next.js, take a look at the following resources:
+## Deployment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Backend deployed on Railway with PostgreSQL. Frontend built and served statically by Express.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+cd client && npm run build    # builds to client/dist
+cd server && npm start        # serves API + static files
+```
 
-## Deploy on Vercel
+## Environment Variables (server/.env)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+DATABASE_URL=postgresql://...
+JWT_SECRET=your-secret-key
+PORT=5000
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## RBAC
+
+| Action | Admin | Member |
+|---|---|---|
+| Create/Delete Projects | ✅ | ❌ |
+| Create/Assign Tasks | ✅ | ❌ |
+| Update Task Status | ✅ | ✅ (own) |
+| View Team | ✅ | ✅ |
