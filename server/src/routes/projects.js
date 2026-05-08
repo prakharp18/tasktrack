@@ -12,6 +12,7 @@ router.get("/", auth, async (req, res) => {
         : {
             OR: [
               { ownerId: req.user.userId },
+              { members: { some: { userId: req.user.userId } } },
               { tasks: { some: { assigneeId: req.user.userId } } },
             ],
           };
@@ -20,7 +21,7 @@ router.get("/", auth, async (req, res) => {
       where,
       include: {
         owner: { select: { id: true, name: true } },
-        _count: { select: { tasks: true } },
+        _count: { select: { tasks: true, members: true } },
       },
       orderBy: { updatedAt: "desc" },
     });
@@ -38,6 +39,7 @@ router.get("/:id", auth, async (req, res) => {
       where: { id: req.params.id },
       include: {
         owner: { select: { id: true, name: true } },
+        members: { include: { user: { select: { id: true, name: true, email: true } } } },
         tasks: {
           include: { assignee: { select: { id: true, name: true } } },
           orderBy: { createdAt: "desc" },
@@ -47,11 +49,9 @@ router.get("/:id", auth, async (req, res) => {
 
     if (!project) return res.status(404).json({ error: "Not found" });
 
-    if (
-      req.user.role !== "ADMIN" &&
-      project.ownerId !== req.user.userId &&
-      !project.tasks.some((t) => t.assigneeId === req.user.userId)
-    ) {
+    const isMember = project.members.some((m) => m.userId === req.user.userId);
+    const isAssigned = project.tasks.some((t) => t.assigneeId === req.user.userId);
+    if (req.user.role !== "ADMIN" && project.ownerId !== req.user.userId && !isMember && !isAssigned) {
       return res.status(403).json({ error: "Access denied" });
     }
 
@@ -117,6 +117,49 @@ router.delete("/:id", auth, async (req, res) => {
 
     await prisma.project.delete({ where: { id: req.params.id } });
     res.json({ message: "Deleted" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+router.post("/:id/members", auth, adminOnly, async (req, res) => {
+  try {
+    const { userId } = req.body;
+    if (!userId) return res.status(400).json({ error: "userId is required" });
+
+    const project = await prisma.project.findUnique({ where: { id: req.params.id } });
+    if (!project) return res.status(404).json({ error: "Project not found" });
+
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    const existing = await prisma.projectMember.findUnique({
+      where: { userId_projectId: { userId, projectId: req.params.id } },
+    });
+    if (existing) return res.status(400).json({ error: "Already a member" });
+
+    const member = await prisma.projectMember.create({
+      data: { userId, projectId: req.params.id },
+      include: { user: { select: { id: true, name: true, email: true } } },
+    });
+
+    res.status(201).json({ member });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+router.delete("/:id/members/:userId", auth, adminOnly, async (req, res) => {
+  try {
+    const record = await prisma.projectMember.findUnique({
+      where: { userId_projectId: { userId: req.params.userId, projectId: req.params.id } },
+    });
+    if (!record) return res.status(404).json({ error: "Not a member" });
+
+    await prisma.projectMember.delete({ where: { id: record.id } });
+    res.json({ message: "Removed" });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server error" });
