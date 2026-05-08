@@ -1,0 +1,9 @@
+{
+  "name": "tasktrack",
+  "version": "1.0.0",
+  "description": "Full-stack project and task management application",
+  "scripts": {
+    "build": "npm install --prefix client && npm run build --prefix client && npm install --prefix server && npm run build --prefix server",
+    "start": "npm start --prefix server"
+  }
+}
