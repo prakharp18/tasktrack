@@ -1,4 +1,4 @@
-const API = import.meta.env.PROD ? "https://tasktrack-production-6368.up.railway.app" : "";
+const API = import.meta.env.PROD ? "https://ethara-api-backend.up.railway.app" : "";
 
 export async function request(path, options = {}) {
   const token = localStorage.getItem("token");

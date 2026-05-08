@@ -4,7 +4,7 @@ A professional full-stack project and task management application built using Re
 
 === LIVE DEPLOYMENT ===
 - Frontend URL (Vercel): https://tasktrack-eta-hazel.vercel.app/
-- Backend URL (Railway): https://tasktrack-production-6368.up.railway.app/
+- Backend URL (Railway): https://ethara-api-backend.up.railway.app/
 
 === TECH STACK ===
 - Frontend: React 18, Vite, React Router, Lucide Icons
