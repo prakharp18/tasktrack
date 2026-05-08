@@ -8,6 +8,9 @@ const router = Router();
 
 router.post("/register", async (req, res) => {
   try {
+    if (!req.body) {
+      return res.status(400).json({ error: "Request body is required" });
+    }
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
@@ -47,6 +50,9 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
+    if (!req.body) {
+      return res.status(400).json({ error: "Request body is required" });
+    }
     const { email, password } = req.body;
 
     if (!email || !password) {
